@@ -5,7 +5,7 @@ import inspect
 import shlex
 from random import randint
 from os import getcwd
-from os.path import basename, dirname
+from os.path import basename
 
 client = discord.Client()
 
@@ -175,7 +175,7 @@ def ensure_emoji(server_name, emoji_name):
         raise ValueError('Emoji not found!')
 
 def get_help_prompt():
-    return f'?{basename(dirname(getcwd()))}'
+    return f'?{basename(getcwd())}'
 
 class colours:
     success = 2664261

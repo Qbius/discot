@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='discot',  
-    version='1.0',
+    version='1.0.1',
     scripts=[] ,
     author='Michał Surówka',
     author_email='michalpiotrsurowka@gmail.com',
