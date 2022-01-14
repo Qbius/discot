@@ -1,0 +1,5 @@
+# .gitignore
+__pycache__/**/*
+dist/**/*
+build/**/*
+discot.egg-info/**/*
