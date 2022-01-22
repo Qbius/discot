@@ -3,6 +3,8 @@ import asyncio
 import argparse
 import inspect
 import shlex
+import sys
+import urllib.parse
 from random import randint
 from os import getcwd
 from os.path import basename
@@ -87,7 +89,7 @@ def get_parser():
 @client.event
 async def on_message(msg):
     [await resolve(onmessage_event(msg)) for onmessage_event in onmessage_events]
-    if msg.author.bot: return
+    if msg.author.bot or msg.content == '': return
 
     if msg.content == get_help_prompt():
         await msg.channel.send('\n'.join([cmd_name + (f' - {cmd_details["description"]}' if cmd_details["description"] else '') for cmd_name, (_cmd, cmd_details, _unp) in available_commands.items()]) if len(available_commands) > 0 else 'No commands found. Spooky...')
@@ -105,14 +107,21 @@ async def on_message(msg):
 
     try:
         parser = get_parser()
-        parsed = parser.parse_args(shlex.split(msg.content))
+        urispace = urllib.parse.quote(' ')
+        parsed = parser.parse_args(shlex.split(msg.content[0] + urllib.parse.quote(msg.content[1:]).replace(urispace, ' ')))
+    except:
+        await msg.channel.send('invalid call!')
+    else:
+        for arg, arg_val in vars(parsed).items():
+            if isinstance(arg_val, str):
+                setattr(parsed, arg, urllib.parse.unquote(arg_val))
+            elif isinstance(arg_val, list) and len(arg_val) > 0 and isinstance(arg_val[0], str):
+                setattr(parsed, arg, list(map(urllib.parse.unquote, arg_val)))
         for spec_name, spec_f in special_parameters(fun).items():
             setattr(parsed, spec_name, await resolve(spec_f(msg, parsed)))
         result = await resolve(parsed.func(parsed))
         if isinstance(result, str):
             await msg.channel.send(result)
-    except:
-        await msg.channel.send('invalid call!')
 
 ######################################################
 
