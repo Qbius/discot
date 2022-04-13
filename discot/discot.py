@@ -9,7 +9,7 @@ from random import randint
 from os import getcwd
 from os.path import basename
 
-client = discord.Client()
+client = discord.Client(intents=discord.Intents.all())
 
 async def resolve(obj):
     if inspect.iscoroutine(obj):
