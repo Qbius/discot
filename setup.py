@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='discot',  
-    version='1.0.4',
+    version='1.0.3',
     scripts=[] ,
     author='Michał Surówka',
     author_email='michalpiotrsurowka@gmail.com',
@@ -15,8 +15,5 @@ setuptools.setup(
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-    ],
-    install_requires = [
-        'discord @ git+https://github.com/Rapptz/discord.py@master#discord.py',
     ]
 )
